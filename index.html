@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" 
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="description" content="A Scratch'n'Sniff Drum Kit">
+  <title>Scratch 'n Sniff 'n Slap</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+
+  <div class="keys">
+
+    <h1>Hit it Fergie!</h1>
+
+    <div class="flex-grid-thirds">
+      <div data-key="65" class="key">
+        <img src="img/1.png">
+        <div class="guide">
+          <h2 class="65">Come on Fergie. Use the keys on the keyboard.</h2>
+        </div>
+        <kbd>A</kbd>
+        <span class="sound"></span>
+      </div>
+      <div data-key="83" class="key">
+        <img src="img/2.png">
+        <div class="guide">
+          <h2 class="83">Come on Fergie. Use the keys on the keyboard.</h2>
+        </div>
+        <kbd>S</kbd>
+        <span class="sound"></span>
+      </div>
+      <div data-key="68" class="key">
+        <img src="img/3.png">
+        <div class="guide">
+          <h2 class="68">Come on Fergie. Use the keys on the keyboard.</h2>
+        </div>
+        <kbd>D</kbd>
+        <span class="sound"></span>
+      </div>
+    </div>
+
+    <div class="flex-grid-thirds">
+      <div data-key="70" class="key">
+        <img src="img/4.png">
+        <div class="guide">
+          <h2 class="70">Come on Fergie. Use the keys on the keyboard.</h2>
+        </div>
+        <kbd>F</kbd>
+        <span class="sound"></span>
+      </div>
+      <div data-key="71" class="key">
+        <img src="img/5.png">
+        <div class="guide">
+          <h2 class="71">Come on Fergie. Use the keys on the keyboard.</h2>
+        </div>
+        <kbd>G</kbd>
+        <span class="sound"></span>
+      </div>
+      <div data-key="72" class="key">
+        <img src="img/6.png">
+        <div class="guide">
+          <h2 class="72">Come on Fergie. Use the keys on the keyboard.</h2>
+        </div>
+        <kbd>H</kbd>
+        <span class="sound"></span>
+      </div>
+    </div>
+    
+    <div class="flex-grid-thirds">
+      <div data-key="74" class="key">
+        <img src="img/7.png">
+        <div class="guide">
+          <h2 class="74">Come on Fergie. Use the keys on the keyboard.</h2>
+        </div>
+        <kbd>J</kbd>
+        <span class="sound"></span>
+      </div>
+      <div data-key="75" class="key">
+        <img src="img/8.png">
+        <div class="guide">
+          <h2 class="75">Come on Fergie. Use the keys on the keyboard.</h2>
+        </div>
+        <kbd>K</kbd>
+        <span class="sound"></span>
+      </div>
+      <div data-key="76" class="key">
+        <img src="img/9.png">
+        <div class="guide">
+          <h2 class="76">Come on Fergie. Use the keys on the keyboard.</h2>
+        </div>
+        <kbd>L</kbd>
+        <span class="sound"></span>
+      </div>
+    </div>
+
+  </div>
+
+  <audio data-key="65" src="sounds/clap.wav"></audio>
+  <audio data-key="83" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" src="sounds/kick.wav"></audio>
+  <audio data-key="70" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" src="sounds/boom.wav"></audio>
+  <audio data-key="72" src="sounds/ride.wav"></audio>
+  <audio data-key="74" src="sounds/snare.wav"></audio>
+  <audio data-key="75" src="sounds/tom.wav"></audio>
+  <audio data-key="76" src="sounds/tink.wav"></audio>
+
+<script>
+
+  function playSound(audio, key) {
+    audio.currentTime = 0;  // Rewind to the start, so you can hit a button sevreal times
+    audio.play();
+    key.classList.add('playing');
+  }
+
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') return; // Skip it if it's not a transform
+    this.classList.remove('playing');
+  }
+
+  function findKeyboardKey(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    if(!audio) return;
+    playSound(audio, key);
+  }
+
+  function findTouchScreenKey(e) {
+    const audio = document.querySelector(`audio[data-key="${e.target.className}"]`); // Hehe, works for touch
+    const key = document.querySelector(`.key[data-key="${e.target.className}"]`);
+    if(!audio) return;
+    playSound(audio, key);
+  }
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+  // Listen for keyboard event
+  window.addEventListener('keydown', findKeyboardKey);
+
+  // Listen for touch event
+  window.addEventListener('touchstart', findTouchScreenKey);
+
+  // Prevent touch scroll
+  document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    window.scroll(0,0);
+    return false;
+  }, false);
+
+</script>
+
+</body>
+</html>
