@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" 
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no , initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
   <meta name="description" content="A Scratch'n'Sniff Drum Kit">
   <title>Scratch 'n Sniff 'n Slap</title>
   <link rel="stylesheet" href="style.css">
@@ -109,6 +109,19 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  // Prevent double tap zoom. Not sure if it works though.
+  document.addEventListener('touchstart', function (event) {
+    if (event.touches.length > 1) {
+        event.preventDefault();
+    }
+  }, false);
+
+  document.addEventListener('touchmove', function(event) {
+    event = event.originalEvent || event;
+    if(event.scale > 1) {
+        event.preventDefault();
+    }
+  }, false);
 
   function playSound(audio, key) {
     audio.currentTime = 0;  // Rewind to the start, so you can hit a button sevreal times
